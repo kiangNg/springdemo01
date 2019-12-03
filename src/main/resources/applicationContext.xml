@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--控制反转-->
+    <bean id="hello" class="com.jbit.service.HelloService">
+    </bean>
+
+    <!--增强处理-->
+    <bean id="helloAdvice" class="com.jbit.adive.HelloAdvice"></bean>
+
+    <!--配置AOP-->
+    <aop:config>
+        <!--找到切入点-->
+        <aop:pointcut id="mycut" expression="execution(* com.jbit.service.HelloService.show())"/>
+        <!--帜入-->
+        <aop:aspect ref="helloAdvice">
+            <!--<aop:after method="after" pointcut-ref="mycut"></aop:after>
+            <aop:before method="before" pointcut-ref="mycut"></aop:before>
+            <aop:after-throwing method="trowing" pointcut-ref="mycut" throwing="e"></aop:after-throwing>
+            <aop:after-returning method="returning" pointcut-ref="mycut" returning="obj"></aop:after-returning>-->
+            <aop:around method="around" pointcut-ref="mycut"></aop:around>
+        </aop:aspect>
+
+    </aop:config>
+
+
+
+
+
+
+
+    
+    <bean id="colorLnkBox" class="com.jbit.printer.service.impl.ColorLnkBoxImpl">
+    </bean>
+    <bean id="a4Paper" class="com.jbit.printer.service.impl.A4PaperImpl"></bean>
+
+    <bean id="b5Paper" class="com.jbit.printer.service.impl.B5PaperImpl"></bean>
+
+    <!-- 组装打印机-->
+    <bean id="printer" class="com.jbit.printer.Printer">
+        <!--依赖注入-->
+        <property name="paper" ref="a4Paper"></property>
+        <property name="lnkBox" ref="colorLnkBox"></property>
+    </bean>
+
+</beans>
